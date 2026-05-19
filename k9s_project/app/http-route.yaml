@@ -7,7 +7,8 @@ metadata:
 spec:
   parentRefs:
   - name: gateway-api # Nome del gateway
+    namespace: infra-gateways
   rules:
   - backendRefs:
-    - name: nginx-svc # Nome del service di tipo ClusterIP
+    - name: nginx # Nome del service di tipo ClusterIP
       port: 80
