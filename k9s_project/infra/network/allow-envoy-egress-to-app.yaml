@@ -1,0 +1,23 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-envoy-egress-to-app
+  namespace: default
+specs:
+  - endpointSelector: {}
+    egress:
+      - toEndpoints:
+          - matchLabels:
+              k8s:io.kubernetes.pod.namespace: default
+        toPorts:
+          - ports:
+              - port: "80"
+                protocol: TCP
+
+      # This makes sure envoy can communicate with its other pods
+      - toEndpoints:
+          - matchLabels:
+              k8s:io.kubernetes.pod.namespace: envoy-gateway-system
+
+      - toEntities:
+          - kube-apiserver

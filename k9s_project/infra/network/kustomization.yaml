@@ -1,0 +1,4 @@
+resources:
+  - allow-app-egress-dns.yaml
+  - allow-app-ingress-from-envoy.yaml
+  - allow-envoy-egress-to-app.yaml

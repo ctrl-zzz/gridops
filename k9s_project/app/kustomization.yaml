@@ -1,0 +1,4 @@
+resources:
+  - deployment.yaml
+  - clusterip-svc.yaml
+  - lb-svc.yaml
