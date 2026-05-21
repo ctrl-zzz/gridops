@@ -2,7 +2,7 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: allow-envoy-egress-to-app
-  namespace: default
+  namespace: app
 specs:
   - endpointSelector: {}
     egress:

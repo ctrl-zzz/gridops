@@ -2,7 +2,7 @@ apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: allow-app-ingress-from-envoy
-  namespace: default
+  namespace: app
 specs:
   - endpointSelector: {}
     ingress:
