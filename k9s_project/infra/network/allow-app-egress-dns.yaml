@@ -1,7 +1,7 @@
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-app-egress-dns
+  name: allow-egress-dns
   namespace: app
 specs:
   - endpointSelector: {}

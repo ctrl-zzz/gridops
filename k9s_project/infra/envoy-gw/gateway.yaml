@@ -1,6 +1,8 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: selfsigned
   name: gateway-api
   labels:
     name: gateway-api
@@ -8,13 +10,25 @@ metadata:
 spec:
   gatewayClassName: eg
   listeners:
-    - name: http
-      protocol: HTTP
-      port: 80
+    - name: https
+      protocol: HTTPS
+      hostname: kubernino.local
+      port: 443
       allowedRoutes:
         namespaces:
           from: Selector
           selector:
             matchLabels:
               kubernetes.io/metadata.name: app
+      tls:
+        mode: Terminate
+        certificateRefs:
+        - kind: Secret
+          name: kubernino-https
+    - name: http
+      port: 80
+      protocol: HTTP
+      allowedRoutes:
+        namespaces:
+          from: Same
 
