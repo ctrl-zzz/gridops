@@ -1,0 +1,8 @@
+resources:
+  - cert-manager
+  - cilium
+  - envoy-gw
+  - gateway-api
+  - metrics-server
+  # - monitoring
+  - network
