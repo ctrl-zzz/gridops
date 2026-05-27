@@ -3,6 +3,6 @@ resources:
   - cilium
   - envoy-gw
   # - gateway-api
-  - metrics-server
+  # - metrics-server
   # - monitoring
   - network
