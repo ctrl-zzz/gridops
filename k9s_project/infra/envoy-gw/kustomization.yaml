@@ -3,6 +3,8 @@ kind: Kustomization
 namespace: infra-gateways
 resources:
   - namespace.yaml
+  - release.yaml
+  - source.yaml
   - gateway-class.yaml
   - gateway.yaml
   - http-route.yaml
