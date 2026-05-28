@@ -5,3 +5,4 @@ metadata:
   namespace: cert-manager
 spec:
   url: jetstack/cert-manager
+  interval: 1m
