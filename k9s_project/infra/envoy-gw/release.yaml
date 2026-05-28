@@ -2,7 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: envoy-gw
-  namespace: envoy-gateway-system
+  namespace: infra-gateways
 spec:
   interval: 1m
   releaseName: envoy
