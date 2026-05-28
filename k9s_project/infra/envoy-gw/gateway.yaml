@@ -4,6 +4,7 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: selfsigned
   name: gateway-api
+  namespace: infra-gateways
   labels:
     name: gateway-api
     component: gateway
