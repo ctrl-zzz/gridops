@@ -8,7 +8,7 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            k8s:io.kubernetes.pod.namespace: envoy-gateway-system
+            k8s:io.kubernetes.pod.namespace: infra-gateways
             app.kubernetes.io/name: envoy
             app.kubernetes.io/component: proxy
       toPorts:
