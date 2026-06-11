@@ -4,3 +4,5 @@ resources:
   - cert-issuer.yaml
   - source.yaml
   - release.yaml
+  - ca-cert-issuer.yaml
+  - ca-certificate.yaml

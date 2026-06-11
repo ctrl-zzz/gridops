@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: metrics-server-tls
+  namespace: kube-system
+spec:
+  secretName: metrics-server-tls
+  issuerRef:
+    name: local-ca-issuer
+    kind: ClusterIssuer
+  dnsNames:
+    - metrics-server.kube-system.svc
+    - metrics-server.kube-system.svc.cluster.local
