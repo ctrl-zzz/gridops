@@ -1,23 +1,31 @@
-grafana:
-  enabled: true
-  adminPassword: admin
+# values-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-prometheus-stack-values
+  namespace: monitoring
+data:
+  values.yaml: |
+    grafana:
+      enabled: true
+      adminPassword: admin
 
-kubeControllerManager:
-  enabled: false
+    kubeControllerManager:
+      enabled: false
 
-kubeEtcd:
-  enabled: false
+    kubeEtcd:
+      enabled: false
 
-kubeProxy:
-  enabled: false
+    kubeProxy:
+      enabled: false
 
-kubeScheduler:
-  enabled: false
+    kubeScheduler:
+      enabled: false
 
-prometheus:
-  prometheusSpec:
-    retention: 7d
-    scrapeInterval: 30s
+    prometheus:
+      prometheusSpec:
+        retention: 7d
+        scrapeInterval: 30s
 
-alertmanager:
-  enabled: true
+    alertmanager:
+      enabled: true

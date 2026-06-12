@@ -4,5 +4,5 @@ resources:
   - envoy-gw
   - gateway-api
   - metrics-server
-  # - monitoring
+  - monitoring
   - network
