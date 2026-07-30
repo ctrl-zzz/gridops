@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="GridOps — Formula One data running on Kubernetes."
+    >
+
+    <title>GridOps</title>
+
+    <link
+        rel="icon"
+        href="/static/branding/favicon.svg"
+        type="image/svg+xml"
+    >
+
+<link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+
+    <header class="hero">
+
+        <div class="hero-content">
+
+        <a href="/" class="brand" aria-label="GridOps">
+            <img
+                src="/static/branding/logo.svg"
+                alt="GRIDOPS"
+                class="brand-logo"
+            >
+        </a>
+
+            <p class="hero-subtitle">
+                Race Operations Dashboard
+            </p>
+
+            <div class="hero-line"></div>
+
+            <div class="hero-tags">
+                <span>OPENF1 DATA</span>
+                <span>KUBERNETES NATIVE</span>
+                <span>GITOPS MANAGED</span>
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <main class="page-container">
+
+        <section class="race-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        LATEST COMPLETED RACE
+                    </p>
+
+                    <h1>
+                        {{ race.circuit }}
+                    </h1>
+
+                    <p class="race-location">
+                        {{ race.location }}, {{ race.country }}
+                    </p>
+                </div>
+
+                <div class="race-status">
+                    <span class="status-dot"></span>
+                    DATA AVAILABLE
+                </div>
+
+            </div>
+
+
+            <div class="race-information">
+
+                <div class="information-item">
+                    <span class="information-label">
+                        CIRCUIT
+                    </span>
+
+                    <span class="information-value">
+                        {{ race.circuit }}
+                    </span>
+                </div>
+
+                <div class="information-item">
+                    <span class="information-label">
+                        LOCATION
+                    </span>
+
+                    <span class="information-value">
+                        {{ race.location }}, {{ race.country }}
+                    </span>
+                </div>
+
+                <div class="information-item">
+                    <span class="information-label">
+                        RACE DATE
+                    </span>
+
+                    <span class="information-value">
+                        {{ race.date_start.strftime("%d %B %Y") }}
+                    </span>
+                </div>
+
+                <div class="information-item">
+                    <span class="information-label">
+                        SEASON
+                    </span>
+
+                    <span class="information-value">
+                        {{ race.year }}
+                    </span>
+                </div>
+
+            </div>
+
+
+            <div class="podium-heading">
+
+                <span></span>
+
+                <h2>
+                    RACE PODIUM
+                </h2>
+
+                <span></span>
+
+            </div>
+
+
+            <div class="podium">
+
+                {% if race.podium | length > 1 %}
+
+                <article
+                    class="podium-card second-place"
+                    style="--team-color: {{ race.podium[1].team_color }};"
+                >
+
+                    <div class="position-label">
+                        P{{ race.podium[1].position }}
+                    </div>
+
+                    <div class="driver-number">
+                        {{ race.podium[1].driver_number }}
+                    </div>
+
+                    <div class="driver-information">
+
+                        <h3>
+                            {{ race.podium[1].driver_name }}
+                        </h3>
+
+                        <p class="driver-team">
+                            {{ race.podium[1].team_name }}
+                        </p>
+
+                        <div class="driver-details">
+
+                            {% if race.podium[1].gap_to_leader is not none %}
+                            <span>
+                                GAP
+                                <strong>
+                                    {{ race.podium[1].gap_to_leader }}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                            {% if race.podium[1].laps is not none %}
+                            <span>
+                                LAPS
+                                <strong>
+                                    {{ race.podium[1].laps }}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="position-footer">
+                        SECOND PLACE
+                    </div>
+
+                </article>
+
+                {% endif %}
+
+
+                {% if race.podium | length > 0 %}
+
+                <article
+                    class="podium-card first-place"
+                    style="--team-color: {{ race.podium[0].team_color }};"
+                >
+
+                    <div class="winner-banner">
+                        WINNER
+                    </div>
+
+                    <div class="position-label">
+                        P{{ race.podium[0].position }}
+                    </div>
+
+                    <div class="driver-number">
+                        {{ race.podium[0].driver_number }}
+                    </div>
+
+                    <div class="driver-information">
+
+                        <h3>
+                            {{ race.podium[0].driver_name }}
+                        </h3>
+
+                        <p class="driver-team">
+                            {{ race.podium[0].team_name }}
+                        </p>
+
+                        <div class="driver-details">
+
+                            {% if race.podium[0].laps is not none %}
+                            <span>
+                                LAPS
+                                <strong>
+                                    {{ race.podium[0].laps }}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                            <span>
+                                RESULT
+                                <strong>
+                                    VICTORY
+                                </strong>
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="position-footer">
+                        RACE WINNER
+                    </div>
+
+                </article>
+
+                {% endif %}
+
+
+                {% if race.podium | length > 2 %}
+
+                <article
+                    class="podium-card third-place"
+                    style="--team-color: {{ race.podium[2].team_color }};"
+                >
+
+                    <div class="position-label">
+                        P{{ race.podium[2].position }}
+                    </div>
+
+                    <div class="driver-number">
+                        {{ race.podium[2].driver_number }}
+                    </div>
+
+                    <div class="driver-information">
+
+                        <h3>
+                            {{ race.podium[2].driver_name }}
+                        </h3>
+
+                        <p class="driver-team">
+                            {{ race.podium[2].team_name }}
+                        </p>
+
+                        <div class="driver-details">
+
+                            {% if race.podium[2].gap_to_leader is not none %}
+                            <span>
+                                GAP
+                                <strong>
+                                    {{ race.podium[2].gap_to_leader }}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                            {% if race.podium[2].laps is not none %}
+                            <span>
+                                LAPS
+                                <strong>
+                                    {{ race.podium[2].laps }}
+                                </strong>
+                            </span>
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                    <div class="position-footer">
+                        THIRD PLACE
+                    </div>
+
+                </article>
+
+                {% endif %}
+
+            </div>
+
+        </section>
+
+
+        <section class="operations-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        PLATFORM
+                    </p>
+
+                    <h2>
+                        GRID STATUS
+                    </h2>
+                </div>
+
+                <p class="section-description">
+                    The application and infrastructure components powering
+                    the GridOps platform.
+                </p>
+
+            </div>
+
+
+            <div class="status-grid">
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            API
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            HEALTHY
+                        </span>
+                    </div>
+
+                    <h3>
+                        FastAPI Backend
+                    </h3>
+
+                    <p>
+                        Retrieves Formula One race data and serves the GridOps
+                        web interface.
+                    </p>
+
+                </article>
+
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            K8S
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            RUNNING
+                        </span>
+                    </div>
+
+                    <h3>
+                        Kubernetes
+                    </h3>
+
+                    <p>
+                        Runs the application workloads and manages their
+                        lifecycle inside the cluster.
+                    </p>
+
+                </article>
+
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            GW
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            ACTIVE
+                        </span>
+                    </div>
+
+                    <h3>
+                        Envoy Gateway
+                    </h3>
+
+                    <p>
+                        Publishes GridOps through Gateway API and routes
+                        incoming HTTP traffic.
+                    </p>
+
+                </article>
+
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            NET
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            READY
+                        </span>
+                    </div>
+
+                    <h3>
+                        Cilium
+                    </h3>
+
+                    <p>
+                        Provides cluster networking, service connectivity
+                        and network policy enforcement.
+                    </p>
+
+                </article>
+
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            CD
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            SYNCED
+                        </span>
+                    </div>
+
+                    <h3>
+                        Flux GitOps
+                    </h3>
+
+                    <p>
+                        Continuously reconciles the cluster with the desired
+                        state stored in Git.
+                    </p>
+
+                </article>
+
+
+                <article class="status-card">
+
+                    <div class="status-card-heading">
+                        <span class="component-code">
+                            OBS
+                        </span>
+
+                        <span class="component-state">
+                            <span class="status-dot"></span>
+                            ONLINE
+                        </span>
+                    </div>
+
+                    <h3>
+                        Observability
+                    </h3>
+
+                    <p>
+                        Prometheus and Grafana provide metrics, dashboards
+                        and operational visibility.
+                    </p>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <section class="developer-section">
+
+            <div class="developer-introduction">
+
+                <p class="section-kicker">
+                    DEVELOPER RESOURCES
+                </p>
+
+                <h2>
+                    GridOps API
+                </h2>
+
+                <p>
+                    Inspect the OpenAPI documentation, verify application
+                    health or retrieve the latest race result directly.
+                </p>
+
+            </div>
+
+
+            <nav
+                class="developer-links"
+                aria-label="Developer resources"
+            >
+
+                <a href="/docs">
+                    <span>API Documentation</span>
+                    <strong>↗</strong>
+                </a>
+
+                <a href="/openapi.json">
+                    <span>OpenAPI Specification</span>
+                    <strong>↗</strong>
+                </a>
+
+                <a href="/health">
+                    <span>Health Endpoint</span>
+                    <strong>↗</strong>
+                </a>
+
+                <a href="/race/latest">
+                    <span>Latest Race JSON</span>
+                    <strong>↗</strong>
+                </a>
+
+            </nav>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+
+        <div class="footer-brand">
+            <span>GRID</span><strong>OPS</strong>
+        </div>
+
+        <p>
+            A Kubernetes learning project focused on Talos, GitOps,
+            networking, security and observability.
+        </p>
+
+        <div class="footer-stack">
+            FASTAPI · OPENF1 · KUBERNETES
+        </div>
+
+    </footer>
+
+</body>
+</html>

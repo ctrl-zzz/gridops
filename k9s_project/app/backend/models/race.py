@@ -8,6 +8,7 @@ class PodiumPosition(BaseModel):
     driver_number: int
     driver_name: str
     team_name: str
+    team_color: str
     laps: int | None = None
     gap_to_leader: float | str | None = None
 

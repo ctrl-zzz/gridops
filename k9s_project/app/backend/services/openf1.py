@@ -125,12 +125,18 @@ async def get_latest_race() -> Race:
         if driver is None:
             continue
 
+        team_color = "#E10600"
+
+        if driver.get("team_colour"):
+            team_color = f"#{driver['team_colour']}"
+
         podium.append(
             PodiumPosition(
                 position=result["position"],
                 driver_number=driver_number,
                 driver_name=driver["full_name"],
                 team_name=driver["team_name"],
+                team_color=team_color,
                 laps=result.get("number_of_laps"),
                 gap_to_leader=result.get("gap_to_leader"),
             )

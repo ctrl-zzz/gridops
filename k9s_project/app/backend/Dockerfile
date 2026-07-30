@@ -1,14 +1,14 @@
-FROM python:3.13-slim
+FROM python:3.14-slim
 
 WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install \
+    --no-cache-dir \
+    --requirement requirements.txt
 
-COPY main.py .
-COPY models ./models
-COPY services ./services
+COPY . .
 
 EXPOSE 8000
 
