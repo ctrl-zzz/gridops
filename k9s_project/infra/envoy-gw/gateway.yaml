@@ -10,6 +10,11 @@ metadata:
     component: gateway
 spec:
   gatewayClassName: eg
+  # infrastructure:
+  #   parametersRef:
+  #     group: gateway.envoyproxy.io
+  #     kind: EnvoyProxy
+  #     name: gateway-api-proxy
   listeners:
     - name: https
       protocol: HTTPS

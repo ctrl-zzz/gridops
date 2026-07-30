@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: f1-backend
-          image: f1-backend:0.1.0
+          image: gridops-backend:0.2.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
