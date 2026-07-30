@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nginx
+  name: f1-backend
 spec:
   type: ClusterIP
   selector:
-    app: nginx
+    app: f1-backend
   ports:
-    - protocol: TCP
+    - name: http
+      protocol: TCP
       port: 80
-      targetPort: 80
+      targetPort: http

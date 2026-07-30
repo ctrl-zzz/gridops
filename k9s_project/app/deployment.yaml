@@ -1,22 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nginx
+  name: f1-backend
   labels:
-    app: nginx
+    app: f1-backend
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: nginx
+      app: f1-backend
   template:
     metadata:
       labels:
-        app: nginx
+        app: f1-backend
     spec:
       containers:
-      - name: nginx
-        image: nginx
-        ports:
-        - containerPort: 80
-
+        - name: f1-backend
+          image: f1-backend:0.1.0
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000

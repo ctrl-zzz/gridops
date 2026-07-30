@@ -10,5 +10,5 @@ spec:
     namespace: infra-gateways
   rules:
   - backendRefs:
-    - name: nginx # Nome del service di tipo ClusterIP
+    - name: f1-backend # Nome del service di tipo ClusterIP
       port: 80

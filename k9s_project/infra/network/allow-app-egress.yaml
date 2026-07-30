@@ -1,0 +1,16 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-f1-backend-egress-https
+  namespace: app
+spec:
+  endpointSelector:
+    matchLabels:
+      app: f1-backend
+  egress:
+    - toEntities:
+        - world
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
