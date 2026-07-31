@@ -57,6 +57,133 @@
 
     <main class="page-container">
 
+        {% if next_race %}
+
+        <section class="next-race-section">
+
+            <div class="next-race-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        NEXT RACE
+                    </p>
+
+                    <h1>
+                        {{ next_race.race_name }}
+                    </h1>
+                </div>
+
+                <div class="countdown-pill">
+                    {{ next_race.countdown_label }}
+                </div>
+
+            </div>
+
+
+            <div class="next-race-information">
+
+                <div class="compact-information-item">
+                    <span class="information-label">
+                        CIRCUIT
+                    </span>
+
+                    <span class="information-value">
+                        {{ next_race.circuit }}
+                    </span>
+                </div>
+
+                <div class="compact-information-item">
+                    <span class="information-label">
+                        LOCATION
+                    </span>
+
+                    <span class="information-value">
+                        {{ next_race.location }}, {{ next_race.country }}
+                    </span>
+                </div>
+
+                <div class="compact-information-item">
+                    <span class="information-label">
+                        RACE START
+                    </span>
+
+                    <span class="information-value">
+                        {{ next_race.local_start_label }}
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        {% if starting_grid %}
+
+        <section class="grid-section">
+
+            <div class="section-heading grid-section-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        RACE PREP
+                    </p>
+
+                    <h2>
+                        {{ starting_grid.title }}
+                    </h2>
+                </div>
+
+                <div class="grid-type-pill">
+                    {% if starting_grid.is_official %}
+                    OFFICIAL
+                    {% else %}
+                    PROVISIONAL
+                    {% endif %}
+                </div>
+
+            </div>
+
+
+            <div class="starting-grid">
+
+                {% for driver in starting_grid.drivers %}
+
+                <article
+                    class="grid-driver-card"
+                    style="--team-color: {{ driver.team_color }};"
+                >
+
+                    <div class="grid-position">
+                        P{{ driver.position }}
+                    </div>
+
+                    <div class="grid-driver-number">
+                        #{{ driver.driver_number }}
+                    </div>
+
+                    <div>
+                        <h3>
+                            {{ driver.driver_name }}
+                        </h3>
+
+                        <p class="driver-team">
+                            {{ driver.team_name }}
+                        </p>
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
         <section class="race-section">
 
             <div class="section-heading">
@@ -321,6 +448,93 @@
             </div>
 
         </section>
+
+
+        {% if championship_standings %}
+
+        <section class="standings-section">
+
+            <div class="section-heading standings-heading">
+
+                <div>
+                    <p class="section-kicker">
+                        CHAMPIONSHIP
+                    </p>
+
+                    <h2>
+                        DRIVERS' CHAMPIONSHIP STANDINGS
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="standings-panel">
+
+                <div class="standings-header" aria-hidden="true">
+                    <span>POS</span>
+                    <span>DRIVER</span>
+                    <span>TEAM</span>
+                    <span>POINTS</span>
+                </div>
+
+
+                <ol class="standings-list" aria-label="Drivers' Championship standings">
+
+                    {% for driver in championship_standings.drivers %}
+
+                    <li
+                        class="standings-row{% if loop.first %} standings-row-leader{% endif %}"
+                        style="--team-color: {{ driver.team_color }};"
+                    >
+
+                        <div class="standings-position-block">
+                            <span class="standings-position">
+                                {{ "%02d" | format(driver.position) }}
+                            </span>
+                        </div>
+
+                        <div class="standings-driver-block">
+                            {% if loop.first %}
+                            <span class="leader-badge">
+                                LEADER
+                            </span>
+                            {% endif %}
+
+                            <span class="standings-driver">
+                                {{ driver.driver_name }}
+                            </span>
+                        </div>
+
+                        <div class="standings-team-block">
+                            <span class="team-colour-dot"></span>
+
+                            <span class="standings-team">
+                                {{ driver.team_name }}
+                            </span>
+                        </div>
+
+                        <div class="standings-points-block">
+                            <span class="standings-points">
+                                {{ driver.points_label }}
+                            </span>
+
+                            <span class="standings-points-label">
+                                PTS
+                            </span>
+                        </div>
+
+                    </li>
+
+                    {% endfor %}
+
+                </ol>
+
+            </div>
+
+        </section>
+
+        {% endif %}
 
 
         <section class="operations-section">
