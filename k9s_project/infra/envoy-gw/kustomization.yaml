@@ -7,4 +7,4 @@ resources:
   - gateway-class.yaml
   - gateway.yaml
   - http-route.yaml
-  # - envoy-proxy.yaml
+  - envoy-proxy.yaml
