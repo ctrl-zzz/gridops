@@ -14,9 +14,12 @@ spec:
       labels:
         app: f1-backend
     spec:
+      imagePullSecrets:
+        - name: ghcr-credentials
+
       containers:
         - name: f1-backend
-          image: gridops-backend:0.2.0
+          image: ghcr.io/ctrl-zzz/gridops:v0.1.3
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
