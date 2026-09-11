@@ -6,3 +6,4 @@ resources:
   - deployment.yaml
   - clusterip-svc.yaml
   - http-route.yaml
+  - ghcr-credentials.sops.yaml
