@@ -4,7 +4,6 @@ from typing import TypeVar
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from prometheus_fastapi_instrumentator import Instrumentator
 
 from models.race import Race
 from services.openf1 import (
@@ -24,7 +23,6 @@ app = FastAPI(
     version="0.1.0",
 )
 
-Instrumentator().instrument(app).expose(app)
 
 app.mount(
     "/static",
