@@ -6,10 +6,6 @@ metadata:
 spec:
   interval: 1m
   releaseName: envoy
-  install:
-    crds: Skip
-  upgrade:
-    crds: Skip
   chart:
     spec:
       interval: 1m
