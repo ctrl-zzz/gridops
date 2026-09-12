@@ -11,3 +11,6 @@ spec:
       protocol: TCP
       port: 80
       targetPort: http
+    # - name: metrics
+    #   port: 9090
+    #   targetPort: 9090

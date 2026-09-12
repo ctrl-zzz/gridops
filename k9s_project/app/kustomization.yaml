@@ -7,3 +7,4 @@ resources:
   - clusterip-svc.yaml
   - http-route.yaml
   - ghcr-credentials.sops.yaml
+  - svc-monitor.yaml
