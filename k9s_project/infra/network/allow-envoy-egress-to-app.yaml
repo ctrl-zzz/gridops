@@ -26,6 +26,27 @@ specs:
     egress:
       - toEndpoints:
           - matchLabels:
+              k8s:io.kubernetes.pod.namespace: kube-system
+              k8s:k8s-app: kube-dns
+        toPorts:
+          - ports:
+              - port: "53"
+                protocol: UDP
+              - port: "53"
+                protocol: TCP
+
+      - toEndpoints:
+          - matchLabels:
+              k8s:io.kubernetes.pod.namespace: infra-gateways
+              app.kubernetes.io/instance: envoy
+              app.kubernetes.io/name: gateway-helm
+        toPorts:
+          - ports:
+              - port: "18000"
+                protocol: TCP
+
+      - toEndpoints:
+          - matchLabels:
               k8s:io.kubernetes.pod.namespace: app
         toPorts:
           - ports:

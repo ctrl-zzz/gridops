@@ -7,9 +7,14 @@ spec:
   interval: 1m
   releaseName: envoy
   install:
-    crds: Create
+    crds: Skip
+    remediation:
+      retries: 3
   upgrade:
-    crds: CreateReplace
+    crds: Skip
+    remediation:
+      retries: 3
+      strategy: rollback
   chart:
     spec:
       interval: 1m
