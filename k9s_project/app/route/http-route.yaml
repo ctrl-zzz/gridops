@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: http-route
+  labels:
+    component: httproute
+spec:
+  parentRefs:
+  - name: gateway-api # Nome del gateway
+    namespace: infra-gateways
+  rules:
+  - backendRefs:
+    - name: f1-backend # Nome del service di tipo ClusterIP
+      port: 80

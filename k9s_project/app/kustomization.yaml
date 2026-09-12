@@ -1,10 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: app
 resources:
-  - namespace.yaml
-  - deployment.yaml
-  - clusterip-svc.yaml
-  - http-route.yaml
-  - ghcr-credentials.sops.yaml
-  - svc-monitor.yaml
+  - core
+  - route
+  - monitoring

@@ -1,0 +1,14 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: f1-backend
+  labels:
+    release: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: f1-backend
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
