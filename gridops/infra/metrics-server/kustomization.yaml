@@ -1,8 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-# Base manifest published by the metrics-server project.
-# Kustomize downloads it and uses it as the starting point.
 resources:
   - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.8.1/components.yaml
   - certificate.yaml
@@ -13,15 +11,16 @@ labels:
       app.kubernetes.io/managed-by: flux
     includeSelectors: false
     includeTemplates: true
+
   - pairs:
       app.kubernetes.io/name: metrics-server
       app.kubernetes.io/version: v0.8.1
       app.kubernetes.io/component: metrics
       app.kubernetes.io/part-of: cluster-platform
-    includeSelectors: true
+    includeSelectors: false
+    includeTemplates: true
 
 patches:
-  # Patch the metrics-server Deployment generated from the upstream manifest.
   - target:
       group: apps
       version: v1
