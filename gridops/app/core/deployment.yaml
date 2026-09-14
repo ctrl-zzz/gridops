@@ -16,13 +16,12 @@ spec:
     spec:
       imagePullSecrets:
         - name: ghcr-credentials
-
       containers:
         - name: f1-backend
-          image: ghcr.io/ctrl-zzz/gridops:988f7d44a5148c5cf7bfca20fa0f900c5c6ce8be # {"$imagepolicy": "flux-system:gridops"}
+          image: ghcr.io/ctrl-zzz/gridops:20260914-154307-f41c1053 # {"$imagepolicy": "flux-system:gridops"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
               containerPort: 8000
-            # - name: metrics
-            #   containerPort: 9090
+          # - name: metrics
+          #   containerPort: 9090
