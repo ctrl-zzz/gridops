@@ -6,3 +6,6 @@ metadata:
 spec:
   image: ghcr.io/ctrl-zzz/gridops
   interval: 1m
+
+  secretRef:
+    name: ghcr-credentials
