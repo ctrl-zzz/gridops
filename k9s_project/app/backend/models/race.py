@@ -14,27 +14,24 @@ class PodiumPosition(BaseModel):
 
 
 class Race(BaseModel):
-    meeting_key: int
-    session_key: int
     year: int
-    circuit: str
-    location: str
-    country: str
-    date_start: datetime
-    date_end: datetime
-    podium: list[PodiumPosition]
-
-
-class NextRace(BaseModel):
-    meeting_key: int
-    session_key: int
-    year: int
+    round: int
     race_name: str
     circuit: str
     location: str
     country: str
     date_start: datetime
-    date_end: datetime
+    podium: list[PodiumPosition]
+
+
+class NextRace(BaseModel):
+    year: int
+    round: int
+    race_name: str
+    circuit: str
+    location: str
+    country: str
+    date_start: datetime
     local_start_label: str
     countdown_label: str
 
@@ -48,8 +45,8 @@ class GridDriver(BaseModel):
 
 
 class StartingGrid(BaseModel):
-    meeting_key: int
-    session_key: int
+    year: int
+    round: int
     title: str
     is_official: bool
     drivers: list[GridDriver]
@@ -66,7 +63,6 @@ class ChampionshipDriver(BaseModel):
 
 
 class ChampionshipStandings(BaseModel):
-    meeting_key: int
-    session_key: int
     year: int
+    round: int
     drivers: list[ChampionshipDriver]
