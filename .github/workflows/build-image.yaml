@@ -2,8 +2,10 @@ name: Build and publish container image
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+    paths:
+      - "gridops/app/backend/**"
 
 jobs:
   build-and-push:
@@ -27,8 +29,8 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
-          context: ./k9s_project/app/backend
+          context: ./gridops/app/backend
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/gridops:${{ github.ref_name }}
+            ghcr.io/${{ github.repository_owner }}/gridops:${{ github.sha }}
             ghcr.io/${{ github.repository_owner }}/gridops:latest
