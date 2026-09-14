@@ -1,29 +1,23 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: app
-  namespace: app
+  name: cert-manager
+  namespace: cert-manager
 spec:
   dependsOn:
     - name: gateway-api-crds
       namespace: infrastructure
-    - name: monitoring
-      namespace: monitoring
   interval: 10m
   retryInterval: 1m
   timeout: 10m
-  path: ./k9s_project/app
+  path: ./gridops/infra/cert-manager/controller
   prune: true
   wait: true
   healthChecks:
-    - apiVersion: apps/v1
-      kind: Deployment
-      name: f1-backend
-      namespace: app
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: cert-manager
+      namespace: cert-manager
   sourceRef:
     kind: GitRepository
     name: flux-system

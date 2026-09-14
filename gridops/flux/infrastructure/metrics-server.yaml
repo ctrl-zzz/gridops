@@ -10,7 +10,7 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 10m
-  path: ./k9s_project/infra/metrics-server
+  path: ./gridops/infra/metrics-server
   prune: true
   wait: true
   sourceRef:

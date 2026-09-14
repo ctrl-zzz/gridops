@@ -1,23 +1,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cert-manager
-  namespace: cert-manager
+  name: monitoring
+  namespace: monitoring
 spec:
-  dependsOn:
-    - name: gateway-api-crds
-      namespace: infrastructure
   interval: 10m
   retryInterval: 1m
-  timeout: 10m
-  path: ./k9s_project/infra/cert-manager/controller
+  timeout: 15m
+  path: ./gridops/infra/monitoring/controller
   prune: true
   wait: true
   healthChecks:
     - apiVersion: helm.toolkit.fluxcd.io/v2
       kind: HelmRelease
-      name: cert-manager
-      namespace: cert-manager
+      name: kube-prometheus-stack
+      namespace: monitoring
   sourceRef:
     kind: GitRepository
     name: flux-system

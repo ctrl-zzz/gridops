@@ -20,7 +20,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./k9s_project/flux
+  path: ./gridops/flux
   prune: true
   sourceRef:
     kind: GitRepository

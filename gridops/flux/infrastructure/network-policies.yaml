@@ -9,7 +9,7 @@ spec:
   interval: 10m
   retryInterval: 1m
   timeout: 5m
-  path: ./k9s_project/infra/network
+  path: ./gridops/infra/network
   prune: true
   sourceRef:
     kind: GitRepository
