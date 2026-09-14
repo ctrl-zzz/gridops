@@ -19,7 +19,7 @@ spec:
 
       containers:
         - name: f1-backend
-          image: ghcr.io/ctrl-zzz/gridops:sha256:e3081e50116e73fb15a03a83dfb08d6681d86914d43849ab9e406961e39ecc35
+          image: ghcr.io/ctrl-zzz/gridops:988f7d44a5148c5cf7bfca20fa0f900c5c6ce8be
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
