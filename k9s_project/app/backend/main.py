@@ -7,12 +7,14 @@ from fastapi.templating import Jinja2Templates
 from prometheus_fastapi_instrumentator import Instrumentator
 
 from models.race import Race
-from services.openf1 import (
+
+from services.jolpica import (
     get_driver_championship_standings,
     get_latest_race,
     get_next_race,
-    get_starting_grid,
 )
+
+from services.openf1 import get_starting_grid
 
 
 T = TypeVar("T")
@@ -58,7 +60,7 @@ async def homepage(request: Request):
         lambda: get_starting_grid(next_race),
     )
     championship_standings = await optional_section(
-        lambda: get_driver_championship_standings(race),
+        get_driver_championship_standings,
     )
 
     return templates.TemplateResponse(
