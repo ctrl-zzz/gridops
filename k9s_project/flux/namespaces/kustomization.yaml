@@ -6,3 +6,14 @@ resources:
   - infra-gateways.yaml
   - infrastructure.yaml
   - monitoring.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: demo-cluster
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+    includeTemplates: true
+  - pairs:
+      app.kubernetes.io/component: namespace
+      app.kubernetes.io/part-of: cluster-platform
+    includeSelectors: true

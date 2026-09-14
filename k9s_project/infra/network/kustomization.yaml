@@ -1,5 +1,20 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
 resources:
   - allow-app-egress-dns.yaml
   - allow-app-ingress-from-envoy.yaml
   - allow-envoy-egress-to-app.yaml
   - allow-app-egress.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: demo-cluster
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+    includeTemplates: true
+  - pairs:
+      app.kubernetes.io/name: network-policies
+      app.kubernetes.io/component: network-security
+      app.kubernetes.io/part-of: cluster-platform
+    includeSelectors: true

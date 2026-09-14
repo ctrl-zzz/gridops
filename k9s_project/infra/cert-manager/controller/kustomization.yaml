@@ -3,3 +3,15 @@ kind: Kustomization
 resources:
   - source.yaml
   - release.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: cert-manager
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+    includeTemplates: true
+  - pairs:
+      app.kubernetes.io/name: cert-manager
+      app.kubernetes.io/component: certificate-controller
+      app.kubernetes.io/part-of: cluster-platform
+    includeSelectors: true

@@ -3,3 +3,15 @@ kind: Kustomization
 resources:
   - ip-pool.yaml
   - l2-announcement.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/instance: cilium
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+    includeTemplates: true
+  - pairs:
+      app.kubernetes.io/name: cilium
+      app.kubernetes.io/component: network-configuration
+      app.kubernetes.io/part-of: cluster-platform
+    includeSelectors: true

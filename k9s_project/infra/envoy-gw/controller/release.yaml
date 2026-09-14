@@ -3,6 +3,8 @@ kind: HelmRelease
 metadata:
   name: envoy-gw
   namespace: infra-gateways
+  labels:
+    app.kubernetes.io/version: 1.7.2
 spec:
   interval: 1m
   releaseName: envoy

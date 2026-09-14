@@ -7,6 +7,19 @@ resources:
   - https://github.com/kubernetes-sigs/metrics-server/releases/download/v0.8.1/components.yaml
   - certificate.yaml
 
+labels:
+  - pairs:
+      app.kubernetes.io/instance: metrics-server
+      app.kubernetes.io/managed-by: flux
+    includeSelectors: false
+    includeTemplates: true
+  - pairs:
+      app.kubernetes.io/name: metrics-server
+      app.kubernetes.io/version: v0.8.1
+      app.kubernetes.io/component: metrics
+      app.kubernetes.io/part-of: cluster-platform
+    includeSelectors: true
+
 patches:
   # Patch the metrics-server Deployment generated from the upstream manifest.
   - target:
