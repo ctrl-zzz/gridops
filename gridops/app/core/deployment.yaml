@@ -18,7 +18,7 @@ spec:
         - name: ghcr-credentials
       containers:
         - name: f1-backend
-          image: ghcr.io/ctrl-zzz/gridops:20260916-112146-29c96ac5 # {"$imagepolicy": "flux-system:gridops"}
+          image: ghcr.io/ctrl-zzz/gridops:20260916-113115-5b3c4b40 # {"$imagepolicy": "flux-system:gridops"}
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
