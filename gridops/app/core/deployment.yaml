@@ -18,11 +18,11 @@ spec:
         - name: ghcr-credentials
       containers:
         - name: f1-backend
-          image: ghcr.io/ctrl-zzz/gridops:20260916-124635-011838c1 # {"$imagepolicy": "flux-system:gridops"}
+          image: ghcr.io/ctrl-zzz/gridops:20260916-134347-cf075f06 # {"$imagepolicy": "flux-system:gridops"}
           imagePullPolicy: IfNotPresent
           env:
-          - name: OTEL_EXPORTER_OTLP_ENDPOINT
-            value: "http://opentelemetry-collector.observability.svc.cluster.local:4317"
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              value: "http://opentelemetry-collector.observability.svc.cluster.local:4317"
           ports:
             - name: http
               containerPort: 8000
