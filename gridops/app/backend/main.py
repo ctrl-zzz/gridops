@@ -19,6 +19,9 @@ from opentelemetry.sdk.trace.export import (
     ConsoleSpanExporter,
 )
 
+from opentelemetry import metrics
+from opentelemetry.sdk.metrics import MeterProvider
+
 ## ##
 
 from models.race import Race
@@ -54,6 +57,9 @@ span_processor = BatchSpanProcessor(
 
 tracer_provider.add_span_processor(span_processor)
 trace.set_tracer_provider(tracer_provider)
+
+meter_provider = MeterProvider(resource=resource)
+metrics.set_meter_provider(meter_provider)
 
 FastAPIInstrumentor.instrument_app(app)
 
