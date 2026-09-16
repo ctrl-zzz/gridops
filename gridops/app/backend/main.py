@@ -22,6 +22,11 @@ from opentelemetry.sdk.trace.export import (
 from opentelemetry import metrics
 from opentelemetry.sdk.metrics import MeterProvider
 
+from opentelemetry.sdk.metrics.export import (
+    ConsoleMetricExporter,
+    PeriodicExportingMetricReader,
+)
+
 ## ##
 
 from models.race import Race
@@ -58,7 +63,15 @@ span_processor = BatchSpanProcessor(
 tracer_provider.add_span_processor(span_processor)
 trace.set_tracer_provider(tracer_provider)
 
-meter_provider = MeterProvider(resource=resource)
+metric_reader = PeriodicExportingMetricReader(
+    ConsoleMetricExporter()
+)
+
+meter_provider = MeterProvider(
+    resource=resource,
+    metric_readers=[metric_reader],
+)
+
 metrics.set_meter_provider(meter_provider)
 
 FastAPIInstrumentor.instrument_app(app)
