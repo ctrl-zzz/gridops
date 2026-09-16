@@ -63,9 +63,7 @@ metrics.set_meter_provider(meter_provider)
 
 FastAPIInstrumentor.instrument_app(app)
 
-
 Instrumentator().instrument(app).expose(app)
-
 
 app.mount(
     "/static",
