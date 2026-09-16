@@ -6,6 +6,7 @@ resources:
   - allow-app-ingress-from-envoy.yaml
   - allow-envoy-egress-to-app.yaml
   - allow-app-egress.yaml
+  - allow-app-egress-to-otel.yaml
 
 labels:
   - pairs:
