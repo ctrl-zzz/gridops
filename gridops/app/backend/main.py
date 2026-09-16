@@ -6,6 +6,21 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from prometheus_fastapi_instrumentator import Instrumentator
 
+
+## Otel ##
+from opentelemetry.sdk.resources import Resource, SERVICE_NAME
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+
+from opentelemetry import trace
+from opentelemetry.sdk.trace import TracerProvider
+
+from opentelemetry.sdk.trace.export import (
+    BatchSpanProcessor,
+    ConsoleSpanExporter,
+)
+
+## ##
+
 from models.race import Race
 
 from services.jolpica import (
@@ -25,6 +40,22 @@ app = FastAPI(
     description="Formula One Operations Platform",
     version="0.1.0",
 )
+
+resource = Resource.create(
+    {
+        SERVICE_NAME: "gridops",
+    }
+)
+
+tracer_provider = TracerProvider(resource=resource)
+span_processor = BatchSpanProcessor(
+    ConsoleSpanExporter()
+)
+
+tracer_provider.add_span_processor(span_processor)
+trace.set_tracer_provider(tracer_provider)
+
+FastAPIInstrumentor.instrument_app(app)
 
 
 Instrumentator().instrument(app).expose(app)
