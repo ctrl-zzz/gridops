@@ -27,6 +27,9 @@ from opentelemetry.sdk.metrics.export import (
     PeriodicExportingMetricReader,
 )
 
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
+
 ## ##
 
 from models.race import Race
@@ -57,14 +60,14 @@ resource = Resource.create(
 
 tracer_provider = TracerProvider(resource=resource)
 span_processor = BatchSpanProcessor(
-    ConsoleSpanExporter()
+    OTLPSpanExporter()
 )
 
 tracer_provider.add_span_processor(span_processor)
 trace.set_tracer_provider(tracer_provider)
 
 metric_reader = PeriodicExportingMetricReader(
-    ConsoleMetricExporter()
+    OTLPMetricExporter()
 )
 
 meter_provider = MeterProvider(
