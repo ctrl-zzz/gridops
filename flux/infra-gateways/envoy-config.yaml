@@ -1,14 +1,18 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: gateway-api-crds
-  namespace: infrastructure
+  name: envoy-config
+  namespace: infra-gateways
 spec:
-  interval: 30m
+  dependsOn:
+    - name: envoy-gateway
+    - name: cert-manager-config
+      namespace: cert-manager
+  interval: 10m
   retryInterval: 1m
   timeout: 10m
-  path: ./gridops/infra/gateway-api
-  prune: false
+  path: ./infra/envoy-gw/config
+  prune: true
   wait: true
   sourceRef:
     kind: GitRepository

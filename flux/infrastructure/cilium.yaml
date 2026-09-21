@@ -1,18 +1,20 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: metrics-server
+  name: cilium
   namespace: infrastructure
 spec:
-  dependsOn:
-    - name: cert-manager-config
-      namespace: cert-manager
   interval: 10m
   retryInterval: 1m
   timeout: 10m
-  path: ./gridops/infra/metrics-server
+  path: ./infra/cilium/controller
   prune: true
   wait: true
+  healthChecks:
+    - apiVersion: helm.toolkit.fluxcd.io/v2
+      kind: HelmRelease
+      name: cilium
+      namespace: kube-system
   sourceRef:
     kind: GitRepository
     name: flux-system

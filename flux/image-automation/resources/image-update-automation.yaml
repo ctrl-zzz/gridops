@@ -26,5 +26,5 @@ spec:
       branch: main
 
   update:
-    path: ./gridops
+    path: ./
     strategy: Setters
