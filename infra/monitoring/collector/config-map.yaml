@@ -17,6 +17,9 @@ data:
       debug:
         verbosity: detailed
 
+      prometheus:
+        endpoint: 0.0.0.0:8889
+
     service:
       pipelines:
         traces:
@@ -25,4 +28,4 @@ data:
 
         metrics:
           receivers: [otlp]
-          exporters: [debug]
+          exporters: [debug, prometheus]

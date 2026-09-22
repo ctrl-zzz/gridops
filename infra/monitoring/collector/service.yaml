@@ -3,6 +3,8 @@ kind: Service
 metadata:
   name: opentelemetry-collector
   namespace: monitoring
+  labels:
+    app: opentelemetry-collector
 spec:
   selector:
     app: opentelemetry-collector
@@ -14,3 +16,7 @@ spec:
     - name: otlp-http
       port: 4318
       targetPort: otlp-http
+
+    - name: prometheus
+      port: 8889
+      targetPort: prometheus
