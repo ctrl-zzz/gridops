@@ -1,7 +1,6 @@
 # services/jolpica.py
 
 import os
-
 from datetime import datetime, timezone
 
 import httpx
@@ -15,7 +14,6 @@ from models.race import (
     PodiumPosition,
     Race,
 )
-
 
 JOLPICA_BASE_URL = os.getenv(
     "JOLPICA_BASE_URL",
@@ -88,12 +86,7 @@ async def get_latest_race() -> Race:
             "current/last/results/",
         )
 
-    races = (
-        data
-        .get("MRData", {})
-        .get("RaceTable", {})
-        .get("Races", [])
-    )
+    races = data.get("MRData", {}).get("RaceTable", {}).get("Races", [])
 
     if not races:
         raise HTTPException(
@@ -113,19 +106,11 @@ async def get_latest_race() -> Race:
             PodiumPosition(
                 position=int(result["position"]),
                 driver_number=int(result["number"]),
-                driver_name=(
-                    f'{driver["givenName"]} '
-                    f'{driver["familyName"]}'
-                ),
+                driver_name=(f"{driver['givenName']} {driver['familyName']}"),
                 team_name=constructor["name"],
-                team_color=team_color(
-                    constructor["constructorId"]
-                ),
+                team_color=team_color(constructor["constructorId"]),
                 laps=int(result["laps"]),
-                gap_to_leader=(
-                    result.get("Time", {}).get("time")
-                    or result.get("status")
-                ),
+                gap_to_leader=(result.get("Time", {}).get("time") or result.get("status")),
             )
         )
 
@@ -153,8 +138,7 @@ async def get_latest_race() -> Race:
     )
 
 
-async def get_driver_championship_standings(
-) -> ChampionshipStandings | None:
+async def get_driver_championship_standings() -> ChampionshipStandings | None:
     async with httpx.AsyncClient(
         timeout=REQUEST_TIMEOUT,
     ) as client:
@@ -163,12 +147,7 @@ async def get_driver_championship_standings(
             "current/driverstandings/",
         )
 
-    standings_lists = (
-        data
-        .get("MRData", {})
-        .get("StandingsTable", {})
-        .get("StandingsLists", [])
-    )
+    standings_lists = data.get("MRData", {}).get("StandingsTable", {}).get("StandingsLists", [])
 
     if not standings_lists:
         return None
@@ -188,40 +167,19 @@ async def get_driver_championship_standings(
             [],
         )
 
-        constructor = (
-            constructors[-1]
-            if constructors
-            else None
-        )
+        constructor = constructors[-1] if constructors else None
 
         points = float(standing["points"])
 
         championship_drivers.append(
             ChampionshipDriver(
-                position=int(
-                    standing["position"]
-                ),
-                driver_number=int(
-                    driver["permanentNumber"]
-                ),
-                driver_name=(
-                    f'{driver["givenName"]} '
-                    f'{driver["familyName"]}'
-                ),
-                team_name=(
-                    constructor["name"]
-                    if constructor
-                    else "Unknown Team"
-                ),
+                position=int(standing["position"]),
+                driver_number=int(driver["permanentNumber"]),
+                driver_name=(f"{driver['givenName']} {driver['familyName']}"),
+                team_name=(constructor["name"] if constructor else "Unknown Team"),
                 points=points,
                 points_label=format_points(points),
-                team_color=(
-                    team_color(
-                        constructor["constructorId"]
-                    )
-                    if constructor
-                    else "#E10600"
-                ),
+                team_color=(team_color(constructor["constructorId"]) if constructor else "#E10600"),
             )
         )
 
@@ -246,12 +204,7 @@ async def get_next_race() -> NextRace | None:
             "current/next/",
         )
 
-    races = (
-        data
-        .get("MRData", {})
-        .get("RaceTable", {})
-        .get("Races", [])
-    )
+    races = data.get("MRData", {}).get("RaceTable", {}).get("Races", [])
 
     if not races:
         return None
@@ -263,18 +216,14 @@ async def get_next_race() -> NextRace | None:
         race.get("time"),
     )
 
-    days_remaining = (
-        date_start.date() - now.date()
-    ).days
+    days_remaining = (date_start.date() - now.date()).days
 
     if days_remaining <= 0:
         countdown_label = "Today"
     elif days_remaining == 1:
         countdown_label = "Tomorrow"
     else:
-        countdown_label = (
-            f"{days_remaining} days remaining"
-        )
+        countdown_label = f"{days_remaining} days remaining"
 
     circuit = race["Circuit"]
     location = circuit["Location"]
@@ -287,8 +236,6 @@ async def get_next_race() -> NextRace | None:
         location=location["locality"],
         country=location["country"],
         date_start=date_start,
-        local_start_label=date_start.strftime(
-            "%d %B %Y, %H:%M UTC"
-        ),
+        local_start_label=date_start.strftime("%d %B %Y, %H:%M UTC"),
         countdown_label=countdown_label,
     )

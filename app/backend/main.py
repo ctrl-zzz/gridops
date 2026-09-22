@@ -4,43 +4,23 @@ from typing import TypeVar
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-
-
-## Otel ##
-from opentelemetry.sdk.resources import Resource, SERVICE_NAME
-from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
-
-from opentelemetry import trace
-from opentelemetry.sdk.trace import TracerProvider
-
-from opentelemetry.sdk.trace.export import (
-    BatchSpanProcessor,
-    ConsoleSpanExporter,
-)
-
-from opentelemetry import metrics
-from opentelemetry.sdk.metrics import MeterProvider
-
-from opentelemetry.sdk.metrics.export import (
-    ConsoleMetricExporter,
-    PeriodicExportingMetricReader,
-)
-
-from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry import metrics, trace
 from opentelemetry.exporter.otlp.proto.grpc.metric_exporter import OTLPMetricExporter
-
-## ##
+from opentelemetry.exporter.otlp.proto.grpc.trace_exporter import OTLPSpanExporter
+from opentelemetry.instrumentation.fastapi import FastAPIInstrumentor
+from opentelemetry.sdk.metrics import MeterProvider
+from opentelemetry.sdk.metrics.export import PeriodicExportingMetricReader
+from opentelemetry.sdk.resources import SERVICE_NAME, Resource
+from opentelemetry.sdk.trace import TracerProvider
+from opentelemetry.sdk.trace.export import BatchSpanProcessor
 
 from models.race import Race
-
 from services.jolpica import (
     get_driver_championship_standings,
     get_latest_race,
     get_next_race,
 )
-
 from services.openf1 import get_starting_grid
-
 
 T = TypeVar("T")
 
@@ -58,16 +38,12 @@ resource = Resource.create(
 )
 
 tracer_provider = TracerProvider(resource=resource)
-span_processor = BatchSpanProcessor(
-    OTLPSpanExporter()
-)
+span_processor = BatchSpanProcessor(OTLPSpanExporter())
 
 tracer_provider.add_span_processor(span_processor)
 trace.set_tracer_provider(tracer_provider)
 
-metric_reader = PeriodicExportingMetricReader(
-    OTLPMetricExporter()
-)
+metric_reader = PeriodicExportingMetricReader(OTLPMetricExporter())
 
 meter_provider = MeterProvider(
     resource=resource,

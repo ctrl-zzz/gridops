@@ -1,6 +1,5 @@
 import asyncio
 import os
-
 from datetime import datetime, timezone
 
 import httpx
@@ -11,7 +10,6 @@ from models.race import (
     NextRace,
     StartingGrid,
 )
-
 
 OPENF1_BASE_URL = os.getenv(
     "OPENF1_BASE_URL",
@@ -97,10 +95,7 @@ def team_name(
     if driver is None:
         return "Unknown Team"
 
-    return (
-        driver.get("team_name")
-        or "Unknown Team"
-    )
+    return driver.get("team_name") or "Unknown Team"
 
 
 def drivers_by_number(
@@ -126,16 +121,10 @@ async def request_openf1(
         async with openf1_request_lock:
             loop = asyncio.get_running_loop()
 
-            elapsed = (
-                loop.time()
-                - last_openf1_request_at
-            )
+            elapsed = loop.time() - last_openf1_request_at
 
             if elapsed < OPENF1_MIN_REQUEST_INTERVAL:
-                await asyncio.sleep(
-                    OPENF1_MIN_REQUEST_INTERVAL
-                    - elapsed
-                )
+                await asyncio.sleep(OPENF1_MIN_REQUEST_INTERVAL - elapsed)
 
             last_openf1_request_at = loop.time()
 
@@ -187,10 +176,7 @@ async def request_drivers(
     if drivers:
         return drivers
 
-    if (
-        fallback_session_key is not None
-        and fallback_session_key != session_key
-    ):
+    if fallback_session_key is not None and fallback_session_key != session_key:
         drivers = await request_openf1(
             client=client,
             endpoint="drivers",
@@ -218,16 +204,13 @@ def build_grid_drivers(
     grid_entries: list[dict],
     drivers: list[dict],
 ) -> list[GridDriver]:
-    driver_lookup = drivers_by_number(
-        drivers
-    )
+    driver_lookup = drivers_by_number(drivers)
 
     ordered_entries = sorted(
         [
             entry
             for entry in grid_entries
-            if entry.get("position") is not None
-            and entry.get("driver_number") is not None
+            if entry.get("position") is not None and entry.get("driver_number") is not None
         ],
         key=lambda entry: entry["position"],
     )
@@ -276,9 +259,7 @@ async def find_race_session(
         session
         for session in sessions
         if session.get("date_start")
-        and parse_openf1_datetime(
-            session["date_start"]
-        ).date() == race_date
+        and parse_openf1_datetime(session["date_start"]).date() == race_date
         and not session.get(
             "is_cancelled",
             False,
@@ -291,12 +272,7 @@ async def find_race_session(
     return min(
         matching_sessions,
         key=lambda session: abs(
-            (
-                parse_openf1_datetime(
-                    session["date_start"]
-                )
-                - next_race.date_start
-            ).total_seconds()
+            (parse_openf1_datetime(session["date_start"]) - next_race.date_start).total_seconds()
         ),
     )
 
@@ -332,10 +308,7 @@ async def get_starting_grid(
         )
 
         official_grid = [
-            entry
-            for entry in official_grid
-            if entry.get("meeting_key")
-            == meeting_key
+            entry for entry in official_grid if entry.get("meeting_key") == meeting_key
         ]
 
         if official_grid:
@@ -370,16 +343,13 @@ async def get_starting_grid(
         qualifying_sessions = [
             session
             for session in sessions
-            if session.get("session_type")
-            == "Qualifying"
+            if session.get("session_type") == "Qualifying"
             and not session.get(
                 "is_cancelled",
                 False,
             )
             and session.get("date_end")
-            and parse_openf1_datetime(
-                session["date_end"]
-            ) <= now
+            and parse_openf1_datetime(session["date_end"]) <= now
         ]
 
         if not qualifying_sessions:
@@ -388,27 +358,19 @@ async def get_starting_grid(
         qualifying_session = max(
             qualifying_sessions,
             key=lambda session: (
-                session.get("session_name")
-                == "Qualifying",
-                parse_openf1_datetime(
-                    session["date_end"]
-                ),
+                session.get("session_name") == "Qualifying",
+                parse_openf1_datetime(session["date_end"]),
             ),
         )
 
-        qualifying_session_key = (
-            qualifying_session["session_key"]
-        )
+        qualifying_session_key = qualifying_session["session_key"]
 
-        qualifying_results = (
-            await request_openf1(
-                client=client,
-                endpoint="session_result",
-                params={
-                    "session_key":
-                        qualifying_session_key,
-                },
-            )
+        qualifying_results = await request_openf1(
+            client=client,
+            endpoint="session_result",
+            params={
+                "session_key": qualifying_session_key,
+            },
         )
 
         if not qualifying_results:
