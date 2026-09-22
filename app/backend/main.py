@@ -4,7 +4,6 @@ from typing import TypeVar
 from fastapi import FastAPI, HTTPException, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from prometheus_fastapi_instrumentator import Instrumentator
 
 
 ## Otel ##
@@ -78,8 +77,6 @@ meter_provider = MeterProvider(
 metrics.set_meter_provider(meter_provider)
 
 FastAPIInstrumentor.instrument_app(app)
-
-Instrumentator().instrument(app).expose(app)
 
 app.mount(
     "/static",
