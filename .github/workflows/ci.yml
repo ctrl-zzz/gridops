@@ -28,3 +28,24 @@ jobs:
 
       - name: Check Ruff formatting
         run: ruff format --check app/backend
+
+  kustomize-render:
+    name: Kustomize render
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Render all Kustomizations
+        shell: bash
+        run: |
+          find app flux infra -name 'kustomization.yaml' -print0 |
+          while IFS= read -r -d '' file; do
+            dir="$(dirname "$file")"
+            echo "Rendering $dir"
+            kubectl kustomize "$dir" > /dev/null || exit 1
+          done
