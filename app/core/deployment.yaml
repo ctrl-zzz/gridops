@@ -18,7 +18,7 @@ spec:
         - name: ghcr-credentials
       containers:
         - name: f1-backend
-          image: ghcr.io/ctrl-zzz/gridops:20260922-133331-c2780d2c # {"$imagepolicy": "flux-system:gridops"}
+          image: ghcr.io/ctrl-zzz/gridops:20260922-141202-938da9be # {"$imagepolicy": "flux-system:gridops"}
           imagePullPolicy: IfNotPresent
           env:
             - name: OTEL_EXPORTER_OTLP_ENDPOINT
