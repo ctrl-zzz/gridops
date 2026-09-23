@@ -1,0 +1,22 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespaces.yaml
+
+  - gateway-api-crds.yaml
+  - cilium.yaml
+  - cilium-config.yaml
+  - metrics-server.yaml
+  - network-policies.yaml
+
+  - cert-manager.yaml
+  - cert-manager-config.yaml
+
+  - monitoring.yaml
+
+  - envoy-gateway.yaml
+  - envoy-config.yaml
+
+  - app.yaml
+  - image-automation.yaml

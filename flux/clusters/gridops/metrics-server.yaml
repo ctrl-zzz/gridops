@@ -1,15 +1,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cert-manager-config
-  namespace: cert-manager
+  name: metrics-server
+  namespace: flux-system
 spec:
   dependsOn:
-    - name: cert-manager
+    - name: cert-manager-config
   interval: 10m
   retryInterval: 1m
-  timeout: 5m
-  path: ./infra/cert-manager/config
+  timeout: 10m
+  path: ./infra/metrics-server
   prune: true
   wait: true
   sourceRef:
