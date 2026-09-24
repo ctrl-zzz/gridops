@@ -18,7 +18,7 @@ spec:
   listeners:
     - name: https
       protocol: HTTPS
-      hostname: kubernino.local
+      hostname: gridops.local
       port: 443
       allowedRoutes:
         namespaces:
@@ -30,7 +30,7 @@ spec:
         mode: Terminate
         certificateRefs:
         - kind: Secret
-          name: kubernino-https
+          name: gridops-tls
     - name: http
       port: 80
       protocol: HTTP
