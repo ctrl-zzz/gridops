@@ -49,3 +49,28 @@ jobs:
             echo "Rendering $dir"
             kubectl kustomize "$dir" > /dev/null || exit 1
           done
+
+      - name: Validate Kubernetes schemas
+        shell: bash
+        run: |
+          find app flux infra -name 'kustomization.yaml' -print0 |
+          while IFS= read -r -d '' file; do
+            dir="$(dirname "$file")"
+            echo "Validating $dir"
+
+            kubectl kustomize "$dir" |
+              kubeconform \
+                -kubernetes-version 1.35.1 \
+                -schema-location default \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.networking.k8s.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/kustomize.toolkit.fluxcd.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/source.toolkit.fluxcd.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/image.toolkit.fluxcd.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/helm.toolkit.fluxcd.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cert-manager.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/cilium.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/monitoring.coreos.com/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/gateway.envoyproxy.io/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+                -skip CustomResourceDefinition \
+                -summary || exit 1
+          done
