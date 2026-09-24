@@ -30,7 +30,7 @@ jobs:
         run: ruff format --check app/backend
 
   kustomize-render:
-    name: Kustomize render
+    name: Kustomize render and schema validation
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,14 @@ jobs:
 
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
+
+      - name: Install kubeconform
+        run: |
+          curl -L \
+            https://github.com/yannh/kubeconform/releases/download/v0.8.0/kubeconform-linux-amd64.tar.gz \
+            -o /tmp/kubeconform.tar.gz
+          tar -xzf /tmp/kubeconform.tar.gz -C /tmp
+          sudo mv /tmp/kubeconform /usr/local/bin/kubeconform
 
       - name: Render all Kustomizations
         shell: bash
