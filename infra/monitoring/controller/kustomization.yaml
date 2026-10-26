@@ -4,6 +4,7 @@ resources:
   - source.yaml
   - release.yaml
   - values.yaml
+  - grafana-admin-credentials.sops.yaml
 
 labels:
   - pairs:

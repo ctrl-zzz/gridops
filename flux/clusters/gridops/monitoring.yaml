@@ -23,6 +23,11 @@ spec:
       name: kube-prometheus-stack
       namespace: monitoring
 
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+
   sourceRef:
     kind: GitRepository
     name: flux-system
