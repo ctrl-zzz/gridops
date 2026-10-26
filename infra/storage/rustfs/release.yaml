@@ -1,0 +1,38 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: rustfs
+  namespace: storage
+spec:
+  interval: 1m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      strategy: rollback
+  chart:
+    spec:
+      chart: rustfs
+      version: 1.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: rustfs
+        namespace: storage
+      interval: 1m
+  releaseName: rustfs
+  values:
+    mode:
+      standalone:
+        enabled: true
+      distributed:
+        enabled: false
+    storageclass:
+      name: standard
+      dataStorageSize: 10Gi
+      logStorageSize: 1Gi
+    secret:
+      existingSecret: rustfs-admin-credentials
+    ingress:
+      enabled: false

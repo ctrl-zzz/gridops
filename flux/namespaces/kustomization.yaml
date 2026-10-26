@@ -6,6 +6,7 @@ resources:
   - infra-gateways.yaml
   - infrastructure.yaml
   - monitoring.yaml
+  - storage.yaml
 
 labels:
   - pairs:

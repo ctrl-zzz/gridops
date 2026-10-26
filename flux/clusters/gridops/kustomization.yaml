@@ -14,6 +14,7 @@ resources:
   - cert-manager-config.yaml
 
   - monitoring.yaml
+  - storage.yaml
 
   - envoy-gateway.yaml
   - envoy-config.yaml
