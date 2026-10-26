@@ -1,0 +1,50 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: tempo
+  namespace: monitoring
+spec:
+  interval: 1m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      strategy: rollback
+  chart:
+    spec:
+      chart: tempo
+      version: 3.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: grafana
+        namespace: monitoring
+      interval: 1m
+  releaseName: tempo
+  values:
+    tempo:
+      extraArgs:
+        "-config.expand-env": "true"
+
+      extraEnv:
+        - name: S3_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tempo-s3-credentials
+              key: accessKey
+        - name: S3_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: tempo-s3-credentials
+              key: secretKey
+
+      storage:
+        trace:
+          backend: s3
+          s3:
+            bucket: tempo
+            endpoint: rustfs-svc.storage.svc.cluster.local:9000
+            access_key: ${S3_ACCESS_KEY}
+            secret_key: ${S3_SECRET_KEY}
+            insecure: true

@@ -15,6 +15,7 @@ resources:
 
   - monitoring.yaml
   - storage.yaml
+  - tempo.yaml
 
   - envoy-gateway.yaml
   - envoy-config.yaml
