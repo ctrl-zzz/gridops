@@ -1,5 +1,6 @@
 # services/jolpica.py
 
+import logging
 import os
 from datetime import datetime, timezone
 
@@ -23,6 +24,8 @@ JOLPICA_BASE_URL = os.getenv(
 REQUEST_TIMEOUT = float(
     os.getenv("REQUEST_TIMEOUT", "10"),
 )
+
+logger = logging.getLogger(__name__)
 
 
 def format_points(points: float) -> str:
@@ -160,26 +163,57 @@ async def get_driver_championship_standings() -> ChampionshipStandings | None:
         "DriverStandings",
         [],
     ):
-        driver = standing["Driver"]
+        try:
+            driver = standing["Driver"]
+            position = int(standing["position"])
+            points = float(standing["points"])
+            driver_name = f"{driver['givenName']} {driver['familyName']}"
+        except (KeyError, TypeError, ValueError) as exc:
+            logger.warning(
+                "Skipping invalid Jolpica championship standing for driver %s: %s",
+                standing.get("Driver", {}).get("driverId", "unknown")
+                if isinstance(standing, dict)
+                else "unknown",
+                exc,
+            )
+            continue
 
         constructors = standing.get(
             "Constructors",
             [],
         )
 
-        constructor = constructors[-1] if constructors else None
+        constructor = (
+            constructors[-1]
+            if constructors and isinstance(constructors[-1], dict)
+            else None
+        )
+        constructor_id = constructor.get("constructorId") if constructor else None
+        constructor_name = (
+            constructor.get("name", "Unknown Team") if constructor else "Unknown Team"
+        )
 
-        points = float(standing["points"])
+        permanent_number = driver.get("permanentNumber")
+
+        try:
+            driver_number = int(permanent_number) if permanent_number is not None else None
+        except (TypeError, ValueError):
+            logger.warning(
+                "Invalid permanentNumber for Jolpica driver %s: %r",
+                driver.get("driverId", "unknown"),
+                permanent_number,
+            )
+            driver_number = None
 
         championship_drivers.append(
             ChampionshipDriver(
-                position=int(standing["position"]),
-                driver_number=int(driver["permanentNumber"]),
-                driver_name=(f"{driver['givenName']} {driver['familyName']}"),
-                team_name=(constructor["name"] if constructor else "Unknown Team"),
+                position=position,
+                driver_number=driver_number,
+                driver_name=driver_name,
+                team_name=constructor_name,
                 points=points,
                 points_label=format_points(points),
-                team_color=(team_color(constructor["constructorId"]) if constructor else "#E10600"),
+                team_color=team_color(constructor_id) if constructor_id else "#E10600",
             )
         )
 

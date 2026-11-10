@@ -54,7 +54,7 @@ class StartingGrid(BaseModel):
 
 class ChampionshipDriver(BaseModel):
     position: int
-    driver_number: int
+    driver_number: int | None = None
     driver_name: str
     team_name: str
     points: float
