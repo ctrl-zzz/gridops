@@ -184,9 +184,7 @@ async def get_driver_championship_standings() -> ChampionshipStandings | None:
         )
 
         constructor = (
-            constructors[-1]
-            if constructors and isinstance(constructors[-1], dict)
-            else None
+            constructors[-1] if constructors and isinstance(constructors[-1], dict) else None
         )
         constructor_id = constructor.get("constructorId") if constructor else None
         constructor_name = (
